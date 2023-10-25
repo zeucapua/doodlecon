@@ -28,7 +28,6 @@
 		"dotenv": "^16.3.1",
 		"drizzle-orm": "^0.28.6",
 		"fabric": "^5.3.0",
-		"fabric-history": "^1.7.0",
 		"postcss": "^8.4.31",
 		"postgres": "^3.4.1",
 		"tailwindcss": "^3.3.3"
