@@ -1,0 +1,43 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "id": "b26a888c-894b-4ed7-99f0-159ac917280d",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "doodles": {
+      "name": "doodles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "artist": {
+          "name": "artist",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canvas": {
+          "name": "canvas",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

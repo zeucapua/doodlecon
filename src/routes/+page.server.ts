@@ -1,7 +1,8 @@
-import { database } from "$lib/server/prisma";
+import { doodles } from "$lib/schema";
+import { database } from "$lib/server/drizzle";
 
 export async function load() {
-  const doodles = database.doodle.findMany();
+  const doodles = await database.query.doodles.findMany();
   return { doodles };
 }
 
@@ -11,11 +12,9 @@ export const actions = {
     const canvas_data = form_data.get("canvas_data");
     const artist = form_data.get("artist");
 
-    await database.doodle.create({
-      data: {
-        artist,
-        canvas: canvas_data
-      }
+    await database.insert(doodles).values({
+      artist,
+      canvas: canvas_data
     });
   },
 }

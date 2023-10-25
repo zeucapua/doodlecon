@@ -1,14 +1,12 @@
 <script lang="ts">
   import { fabric } from "fabric";
   import { onMount } from "svelte";
-  import { type Doodle } from "@prisma/client";
+  import type { Doodle } from "$lib/schema";
 
   export let doodle : Doodle | undefined = undefined; 
   let canvas : fabric.Canvas | fabric.StaticCanvas;
 
-
   let canvas_data : string = "";
-  let artist : string = ""; // set from doodle_id
   
   let brush_size : number = 3;
 
@@ -17,12 +15,13 @@
 
     // render from canvas_data (if fetched via doodle_id)
     if (doodle) {
-      canvas = new fabric.StaticCanvas("fabric", {
+      canvas = new fabric.StaticCanvas(`${doodle.id}`, {
         backgroundColor: "rgb(46, 16, 101)"
       });
 
-      canvas.loadFromJSON(JSON.parse(doodle.canvas));
-      artist = doodle.artist;
+      canvas.setWidth(parent.clientWidth);
+      canvas.setHeight(parent.clientWidth);
+      canvas.loadFromJSON(JSON.parse(doodle.canvas ?? "{}"));
     }
     else { 
       canvas = new fabric.Canvas("fabric", {
@@ -52,8 +51,11 @@
   $: if (canvas) canvas.freeDrawingBrush.width = brush_size;
 </script>
 
-<div class="flex flex-col gap-4 w-full h-full" bind:this={parent}>
-  {#if !doodle}
+<div class="flex flex-col gap-4 w-full h-full max-w-md" bind:this={parent}>
+  {#if doodle}
+    <canvas id={`${doodle.id}`} class="rounded-xl px-auto border-4 border-white" />
+    <p>{doodle.artist}</p>
+  {:else}
     <div class="flex justify-between gap-4 items-center">
       <div class="flex gap-2">
         <label>
@@ -66,9 +68,9 @@
         </label>
       </div>
     </div>
-  {/if}
-  <canvas id="fabric" class="rounded-xl px-auto border-4 border-white border-dashed" />
-  {#if !doodle}
+
+    <canvas id="fabric" class="rounded-xl px-auto border-4 border-white border-dashed" />
+
     <form method="POST" action="?/submitDoodle" class="w-full flex flex-col gap-4">
       <input name="canvas_data" type="hidden" value={canvas_data} />
       <label class="self-end flex items-center gap-2 basis-1/2">
@@ -77,7 +79,5 @@
       </label>
       <button class="w-full px-4 py-2 bg-white text-black shadow-md rounded-xl">Submit Doodle</button>
     </form>
-  {:else}
-    <p>{doodle.artist}</p> 
   {/if}
 </div>
